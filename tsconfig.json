@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "system",
         "target": "es6",
         "removeComments": true,
         "noResolve": false,
@@ -8,7 +8,8 @@
         "experimentalDecorators": true,
         "strictNullChecks": true,
         "noUnusedParameters": true,
-        "noUnusedLocals": true
+        "noUnusedLocals": true,
+        "outFile": "./dist/kernel.ts"
     },
     "compileOnSave": false,
     "include": [
