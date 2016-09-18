@@ -4,7 +4,7 @@ import { ProcessStatus } from "./process-status";
 import { ProcessSleep } from "../typings/process-sleep";
 abstract class Process {
     public status: number;
-    public classPath: string;
+    public abstract classPath(): string;
     public sleepInfo?: ProcessSleep;
     public priority: ProcessPriority;
     public memory: any;

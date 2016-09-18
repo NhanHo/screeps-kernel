@@ -4,7 +4,7 @@ export interface Process {
     pid: number;
     parentPID: number;
     status: number;
-    classPath: string;
+    classPath(): string;
     priority: ProcessPriority;
     sleepInfo?: ProcessSleep;
     memory: any;

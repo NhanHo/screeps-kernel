@@ -76,7 +76,7 @@ export let storeProcessTable = function () {
         (p: Process) => p.status !== ProcessStatus.DEAD);
 
     Memory.processTable = _.map(aliveProcess,
-        (p: Process) => [p.pid, p.parentPID, p.classPath, p.priority, p.sleepInfo]);
+        (p: Process) => [p.pid, p.parentPID, p.classPath(), p.priority, p.sleepInfo]);
 };
 
 export let getProcessMemory = function (pid: number) {
