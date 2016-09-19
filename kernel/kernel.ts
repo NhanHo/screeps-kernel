@@ -95,9 +95,10 @@ let runOneQueue = function (queue: Process[]) {
                     killProcess(process.pid);
                 }
                 if ((process.status === ProcessStatus.SLEEP) &&
-                    ((process.sleepInfo!.start + process.sleepInfo!.duration) > Game.time) &&
+                    ((process.sleepInfo!.start + process.sleepInfo!.duration) < Game.time) &&
                     (process.sleepInfo!.duration !== -1)) {
                     process.status = ProcessStatus.ALIVE;
+                    process.sleepInfo = undefined;
                 }
                 if (process.status === ProcessStatus.ALIVE) {
                     process.run();
@@ -132,10 +133,11 @@ export let loadProcessTable = function () {
             let p = new processClass(pid, parentPID, priority) as Process;
             p.setMemory(memory);
             processTable[p.pid] = p;
-            if (remaining.length === 0) {
-                p.sleepInfo = { start: Game.time, duration: 0 };
-            } else {
-                p.sleepInfo = remaining[0];
+            const sleepInfo = remaining.pop();
+            if (sleepInfo !== undefined) {
+                p.sleepInfo = sleepInfo;
+
+                p.status = ProcessStatus.SLEEP;
             }
             if (priority === ProcessPriority.Ticly) {
                 ticlyQueue.push(p);

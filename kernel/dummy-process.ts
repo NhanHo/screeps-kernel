@@ -2,7 +2,7 @@ import Process = require("./process");
 
 class DummyProcess extends Process {
     public classPath(): string {
-        return "dummy-process";
+        return "./dummy-process";
     }
 
     public run(): number {
