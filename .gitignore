@@ -1,7 +1,7 @@
 node_modules
 \#*
 \.#*
-*.js
+src/**/*.js
 dist
 typings/globals
 typings/modules
