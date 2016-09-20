@@ -134,7 +134,7 @@ export let loadProcessTable = function () {
             p.setMemory(memory);
             processTable[p.pid] = p;
             const sleepInfo = remaining.pop();
-            if (sleepInfo !== undefined) {
+            if (sleepInfo !== null) {
                 p.sleepInfo = sleepInfo;
 
                 p.status = ProcessStatus.SLEEP;
