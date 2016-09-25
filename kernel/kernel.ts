@@ -16,17 +16,10 @@ export let reboot = function () {
 
 let getFreePid = function () {
     Memory.pidCounter = Memory.pidCounter || 0;
-    /*let currentPids = _.sortBy(_.map(processTable, p => p.pid));
-    for (let i = 1; i < currentPids.length; i++) {
-        if (!processTable[i]) {
-            return i;
-        }
-    }
-    return currentPids.length;*/
     while (getProcessById(Memory.pidCounter)) {
         Memory.pidCounter += 1;
     }
-    return 0;
+    return Memory.pidCounter;
 };
 
 export let garbageCollection = function () {
