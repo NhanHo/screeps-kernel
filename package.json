@@ -1,30 +1,45 @@
 {
-  "name": "screeps-starter",
-  "version": "0.0.0",
-  "description": "",
-  "scripts": {
-    "postinstall": "typings install",
-    "typings": "typings"
-  },
-  "author": "",
-  "license": "MIT",
-  "devDependencies": {
-    "deep-equal": "^1.0.1",
-    "gulp": "^3.9.1",
-    "gulp-clean": "^0.3.2",
-    "gulp-collect": "^0.1.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-tslint": "^6.0.1",
-    "gulp-typescript": "^2.13.6",
-    "gulp-util": "^3.0.7",
-    "jest": "^21.2.1",
-    "lodash": "^3.10.1",
-    "q": "^1.4.1",
-    "recast": "^0.11.10",
-    "tape": "^4.6.0",
-    "through2": "^2.0.1",
-    "tslint": "^3.13.0",
-    "typescript": "^2.5.3",
-    "typings": "^2.1.1"
-  }
+    "name": "screeps-starter",
+    "version": "0.0.0",
+    "description": "",
+    "scripts": {
+        "postinstall": "./node_modules/.bin/typings install",
+        "typings": "typings",
+        "lint": "./node_modules/.bin/tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+        "test": "./node_modules/.bin/jest"
+    },
+    "author": "",
+    "license": "MIT",
+    "devDependencies": {
+        "deep-equal": "^1.0.1",
+        "gulp": "^3.9.1",
+        "gulp-clean": "^0.3.2",
+        "gulp-collect": "^0.1.0",
+        "gulp-rename": "^1.2.2",
+        "gulp-tslint": "^6.0.1",
+        "gulp-typescript": "^2.13.6",
+        "gulp-util": "^3.0.7",
+        "jest": "^21.2.1",
+        "lodash": "^3.10.1",
+        "q": "^1.4.1",
+        "recast": "^0.11.10",
+        "tape": "^4.6.0",
+        "through2": "^2.0.1",
+        "ts-jest": "^21.2.3",
+        "tslint": "^3.13.0",
+        "typescript": "^2.5.3",
+        "typings": "^2.1.1"
+    },
+    "jest": {
+        "moduleFileExtensions": [
+            "ts",
+            "tsx",
+            "js"
+        ],
+        "transform": {
+            "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+        },
+        "testRegex": "/__tests__/.*\\.(ts|tsx|js)$"
+    }
+
 }
