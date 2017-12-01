@@ -16,6 +16,7 @@ describe("Supervision tree basics", () => {
         global.Game = { "time": 0 };
         kernel.reboot();
         const p = new DummyProcessWithDeps(0, 0);
+        p.dummyProcessSetup = jest.fn();
         kernel.addProcess(p);
         kernel.storeProcessTable();
 
@@ -31,5 +32,13 @@ describe("Supervision tree basics", () => {
         runOneTick();
         //console.log(JSON.stringify(Memory));
         expect(Memory.processTable.length).toBe(2);
+    })
+
+    test('Callback to setup dependent process should be called', () => {
+        const p = new DummyProcessWithDeps(0, 0);
+        p.dummyProcessSetup = jest.fn();
+        kernel.addProcess(p);
+        kernel.storeProcessTable();
+        runOneTick();
     })
 })

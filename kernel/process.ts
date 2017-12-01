@@ -3,6 +3,8 @@ import { ProcessPriority } from "./constants";
 import { ProcessStatus } from "./process-status";
 import { ProcessSleep } from "../typings/process-sleep";
 type ConcreteProcess = { new(pid: number, parentPID: number, priority?: ProcessPriority): Process };
+type DependencyInfo = [ConcreteProcess, ProcessSetupCallback];
+type ProcessSetupCallback = (p: Process) => void
 
 abstract class Process {
     public status: number;
@@ -10,7 +12,7 @@ abstract class Process {
     public sleepInfo?: ProcessSleep;
     public priority: ProcessPriority;
     public memory: any;
-    protected deps: ConcreteProcess[] = [];
+    protected deps: DependencyInfo[] = [];
     protected kernel = Kernel;
     /*public static reloadFromTable(pid: number, parentPID: number, priority = ProcessPriority.LowPriority) {
         const p = new Process()
@@ -33,15 +35,24 @@ abstract class Process {
         return signal;
     }
 
+    public setup(..._) { };
+
+    public registerDependency(p: ConcreteProcess, processSetup: ProcessSetupCallback) {
+        let dependencyInfo: DependencyInfo = [p, processSetup];
+        this.deps.push(dependencyInfo);
+    }
+
     public runDeps() {
         let deps = this.memory.deps = this.memory.deps || {};
         for (let dep of this.deps) {
-            let t = new dep(0, 0, 0);
+            let [processClass, callback] = dep;
+            let t = new processClass(0, 0, 0);
             let classPath = t.classPath();
             if ((!deps[classPath]) ||
                 (!Kernel.getProcessById(deps[classPath]))) {
-                let p = new dep(0, this.pid);
+                let p = new processClass(0, this.pid);
                 this.kernel.addProcess(p);
+                callback.bind(this)(p);
                 deps[classPath] = p.pid;
 
             }
