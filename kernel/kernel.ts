@@ -154,3 +154,14 @@ export let loadProcessTable = function () {
         }
     }
 };
+
+export let getChildProcess = function (p: Process) {
+    let result: Process[] = [];
+    for (let i in processTable) {
+        let process = processTable[i];
+        if (process.parentPID === p.pid) {
+            result.push(process);
+        }
+    }
+    return result;
+}
