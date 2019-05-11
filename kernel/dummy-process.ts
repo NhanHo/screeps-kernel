@@ -1,8 +1,8 @@
-import Process = require("./process");
+import { Process } from "./process";
 
-class DummyProcess extends Process {
+export class DummyProcess extends Process {
     public classPath(): string {
-        return "./dummy-process";
+        return "DummyProcess";
     }
 
     public run(): number {
@@ -10,4 +10,3 @@ class DummyProcess extends Process {
     }
 }
 
-export = DummyProcess;

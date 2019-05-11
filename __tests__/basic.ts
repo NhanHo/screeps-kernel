@@ -1,8 +1,11 @@
 "use strict";
-import kernel = require("../kernel/kernel");
-import DummyProcess = require("../kernel/dummy-process");
-import constants = require("../kernel/constants");
+import * as kernel from "../kernel/kernel";
+import { DummyProcess } from "../kernel/dummy-process";
+import * as constants from "../kernel/constants";
+import { Process, Lookup } from "../kernel/process");
 import _ = require("lodash");
+let processlookup = Lookup;
+processlookup.addProcess(DummyProcess);
 global._ = _;
 
 describe("Basic kernel tasks", () => {
@@ -20,7 +23,7 @@ describe("Basic kernel tasks", () => {
         const processTable = kernel.processTable;
         expect(processTable[0]).toBe(p);
         kernel.storeProcessTable();
-        expect(Memory.processTable[0]).toEqual([0, 0, "./dummy-process", constants.ProcessPriority.LowPriority, undefined])
+        expect(Memory.processTable[0]).toEqual([0, 0, "DummyProcess", constants.ProcessPriority.LowPriority, undefined])
     });
 
     test('Serializing process', () => {

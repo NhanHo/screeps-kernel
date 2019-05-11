@@ -1,8 +1,13 @@
-import kernel = require("../kernel/kernel");
-import DummyProcessWithDeps = require("../kernel/dummy-process-with-deps");
-import constants = require("../kernel/constants");
+import * as kernel from "../kernel/kernel";
+import { DummyProcessWithDeps } from "../kernel/dummy-process-with-deps";
+import { DummyProcess } from "../kernel/dummy-process";
+import * as constants from "../kernel/constants";
 import _ = require("lodash");
 global._ = _;
+import { Lookup as processlookup } from "../kernel/process";
+
+processlookup.addProcess(DummyProcessWithDeps);
+processlookup.addProcess(DummyProcess);
 
 function runOneTick() {
     kernel.loadProcessTable();

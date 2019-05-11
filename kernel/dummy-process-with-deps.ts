@@ -1,7 +1,7 @@
-import Process = require("./process");
-import DummyProcess = require("./dummy-process");
+import { Process } from "./process";
+import { DummyProcess } from "./dummy-process";
 import { ProcessPriority } from "./constants";
-class DummyProcessWithDeps extends Process {
+export class DummyProcessWithDeps extends Process {
     protected deps = [];
 
     public classPath(): string {
@@ -26,5 +26,3 @@ class DummyProcessWithDeps extends Process {
         p.memory.test = 1;
     }
 }
-
-export = DummyProcessWithDeps;

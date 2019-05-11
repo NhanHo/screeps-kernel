@@ -6,7 +6,8 @@ type ConcreteProcess = { new(pid: number, parentPID: number, priority?: ProcessP
 type DependencyInfo = [ConcreteProcess, ProcessSetupCallback];
 type ProcessSetupCallback = (p: Process) => void
 
-abstract class Process {
+
+export abstract class Process {
     public status: number;
     public abstract classPath(): string;
     public sleepInfo?: ProcessSleep;
@@ -61,4 +62,12 @@ abstract class Process {
 
 }
 
-export = Process;
+const data = {}
+export let Lookup = {
+    addProcess: function (p: typeof Process) {
+        data[p.name] = <any>p;
+    },
+    getProcess: function (id: string): any | null {
+        return data[id];
+    }
+}

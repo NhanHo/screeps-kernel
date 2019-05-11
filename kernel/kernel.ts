@@ -2,6 +2,7 @@ import { ProcessStatus } from "./process-status";
 
 import { ProcessPriority } from "./constants";
 import { Process } from "../typings/process";
+import {Lookup as processLookup} from "./process";
 let ticlyQueue: Process[] = [];
 let ticlyLastQueue: Process[] = [];
 let lowPriorityQueue: Process[] = [];
@@ -74,7 +75,7 @@ export let storeProcessTable = function () {
         (p: Process) => p.status !== ProcessStatus.DEAD);
 
     Memory.processTable = _.map(aliveProcess,
-        (p: Process) => [p.pid, p.parentPID, p.classPath(), p.priority, p.sleepInfo]);
+        (p: Process) => [p.pid, p.parentPID, p.constructor.name, p.priority, p.sleepInfo]);
 };
 
 export let getProcessMemory = function (pid: number) {
@@ -117,8 +118,6 @@ export let run = function () {
     runOneQueue(lowPriorityQueue);
 };
 
-declare var require: any;
-
 export let loadProcessTable = function () {
     reboot();
     Memory.processTable = Memory.processTable || [];
@@ -126,7 +125,11 @@ export let loadProcessTable = function () {
     for (let item of storedTable) {
         let [pid, parentPID, classPath, priority, ...remaining] = item;
         try {
-            let processClass = require(classPath);
+            let processClass = processLookup.getProcess(classPath);
+            if (processClass === null) {
+                console.log ("Fail to lookup process: " + classPath);
+                continue;
+            }
             let memory = getProcessMemory(pid);
             let p = new processClass(pid, parentPID, priority) as Process;
             p.setMemory(memory);
