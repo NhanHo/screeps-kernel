@@ -6,10 +6,42 @@ type ConcreteProcess = { new(pid: number, parentPID: number, priority?: ProcessP
 type DependencyInfo = [ConcreteProcess, ProcessSetupCallback];
 type ProcessSetupCallback = (p: Process) => void
 
+export function memory(def?: any) {
+    return function (target: any, key: string) {
+        // property getter
+        var getter = function () {
+            if (!this.memory[key]) {
+                this.memory[key] = def;
+            }
+            return this.memory[key];
+        };
+
+        // property setter
+        var setter = function (newVal) {
+            if (this.memory) {
+                this.memory[key] = newVal;
+            }
+        };
+
+        // Delete property.
+        if (delete (<any>target)[key]) {
+            // Create new property with getter and setter
+            Object.defineProperty(target, key, {
+                get: getter,
+                set: setter,
+                enumerable: true,
+                configurable: true
+            });
+        }
+    }
+}
+
 
 export abstract class Process {
     public status: number;
-    public abstract classPath(): string;
+    public classPath(): string {
+        return "None";
+    };
     public sleepInfo?: ProcessSleep;
     public priority: ProcessPriority;
     public memory: any;
@@ -36,7 +68,7 @@ export abstract class Process {
         return signal;
     }
 
-    public setup(..._) { };
+    public setup(..._: any[]) { };
 
     public registerDependency(p: ConcreteProcess, processSetup: ProcessSetupCallback) {
         let dependencyInfo: DependencyInfo = [p, processSetup];
@@ -62,7 +94,7 @@ export abstract class Process {
 
 }
 
-const data = {}
+const data: any = {}
 export let Lookup = {
     addProcess: function (p: typeof Process) {
         data[p.name] = <any>p;

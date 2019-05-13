@@ -2,7 +2,7 @@ import { ProcessStatus } from "./process-status";
 
 import { ProcessPriority } from "./constants";
 import { Process } from "../typings/process";
-import {Lookup as processLookup} from "./process";
+import { Lookup as processLookup } from "./process";
 let ticlyQueue: Process[] = [];
 let ticlyLastQueue: Process[] = [];
 let lowPriorityQueue: Process[] = [];
@@ -66,7 +66,7 @@ export let sleepProcess = function (p: Process, ticks: number) {
     return p;
 }
 
-export let getProcessById = function (pid: number): Process {
+export let getProcessById = function (pid: number): Process | null {
     return processTable[pid];
 };
 
@@ -127,7 +127,7 @@ export let loadProcessTable = function () {
         try {
             let processClass = processLookup.getProcess(classPath);
             if (processClass === null) {
-                console.log ("Fail to lookup process: " + classPath);
+                console.log("Fail to lookup process: " + classPath);
                 continue;
             }
             let memory = getProcessMemory(pid);
